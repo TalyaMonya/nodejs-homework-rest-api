@@ -1,11 +1,14 @@
 import express from 'express';
 import contactsController from '../../controllers/contacts-controller.js';
 import isValidId from '../../middlewares/isValidId.js';
+import auth from '../../middlewares/auth.js';
 import isEmptyBody from '../../decorators/isEmptyBody.js';
 import validateBody from '../../decorators/validateBody.js';
 import { contactAddSchema, contactUpdateSchema, contactUpdateFavoriteSchema } from '../../models/contacts.js';
 
-const router = express.Router()
+const router = express.Router();
+
+router.use(auth);
 
 router.get('/', contactsController.getContacts);
 
