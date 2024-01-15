@@ -5,6 +5,7 @@ import auth from '../../middlewares/auth.js';
 import isEmptyBody from '../../decorators/isEmptyBody.js';
 import validateBody from '../../decorators/validateBody.js';
 import { contactAddSchema, contactUpdateSchema, contactUpdateFavoriteSchema } from '../../models/contacts.js';
+import upload from '../../middlewares/upload.js';
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ router.get('/', contactsController.getContacts);
 
 router.get('/:contactId', isValidId, contactsController.getContactById);
 
-router.post('/', isEmptyBody('missing fields'), validateBody(contactAddSchema), contactsController.addContact);
+router.post('/', upload.single("avatar"), isEmptyBody('missing fields'), validateBody(contactAddSchema), contactsController.addContact);
 
 router.put('/:contactId', isValidId, isEmptyBody('missing fields'), validateBody(contactUpdateSchema), contactsController.updateContact);
 

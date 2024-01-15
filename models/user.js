@@ -18,8 +18,13 @@ const userSchema = new Schema({
         enum: ["starter", "pro", "business"],
         default: "starter",
     },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+    },
+    avatarURL: String,
     token: String
-}, { versionKey: false });
+}, { versionKey: false, timestamps: true });
 
 userSchema.post('save', handleSaveError);
 userSchema.pre('findOneAndUpdate', addUpdateSettings);

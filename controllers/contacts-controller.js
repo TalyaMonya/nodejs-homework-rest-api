@@ -1,7 +1,10 @@
 import Contact from '../models/contacts.js'
 import ctrlWrapper from '../decorators/ctrlWrapper.js';
 import HttpError from '../helpers/HttpError.js';
+import fs from "fs/promises";
+import path from 'path';
 
+const avatarPath = path.resolve("public", "avatars");
 
 const getContacts = async (req, res, next) => {
     const { _id: owner } = req.user;
@@ -28,9 +31,20 @@ const getContactById = async (req, res, next) => {
     res.json(contact);
 }
 
+// const addContact = async (req, res, next) => {
+//     const { _id: owner } = req.user;
+//     const newContact = await Contact.create({ ...req.body, owner });
+//     res.status(201).json(newContact);
+// }
+
 const addContact = async (req, res, next) => {
     const { _id: owner } = req.user;
-    const newContact = await Contact.create({ ...req.body, owner });
+    const { path: oldPath, filename } = req.file;
+    const newPath = path.join(avatarPath, filename);
+    await fs.rename(oldPath, newPath);
+    const avatarURL = path.join("avatars", filename)
+
+    const newContact = await Contact.create({ ...req.body, avatarURL, owner });
     res.status(201).json(newContact);
 }
 
