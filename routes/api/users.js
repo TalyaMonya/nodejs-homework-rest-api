@@ -4,6 +4,7 @@ import validateBody from "../../decorators/validateBody.js";
 import { updateSubscriptionSchema, userSigninSchema, userSignupSchema } from "../../models/user.js";
 import usersController from "../../controllers/users-controller.js";
 import auth from "../../middlewares/auth.js";
+import upload from "../../middlewares/upload.js";
 
 
 const router = express.Router();
@@ -17,5 +18,7 @@ router.post('/logout', auth, usersController.signout);
 router.get('/current', auth, usersController.getCurrent);
 
 router.patch('/', auth, validateBody(updateSubscriptionSchema), usersController.updateSubscription);
+
+router.patch('/avatar', upload.single("avatar"), auth, usersController.updateAvatar);
 
 export default router;

@@ -19,12 +19,16 @@ const contactSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  avatarURL: {
+    type: String,
+    required: true,
+  },
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'user',
     required: true
   }
-}, { versionKey: false });
+}, { versionKey: false, timestamps: true });
 
 
 contactSchema.post('save', handleSaveError);
